@@ -1,4 +1,9 @@
+package Algorithm;
+
+import DataStructure.Graph;
+
 import java.util.*;
+import static DataStructure.Graph.Edge;
 
 public class DepthFirstPaths {
     private final Set<Integer> marked;
@@ -17,12 +22,12 @@ public class DepthFirstPaths {
     // recursive depth first search vertex, reachable vertices are stored in marked set
     private void dfs(Graph graph, int vertex) {
         marked.add(vertex); // 现在是前序的深搜，若想改为后序的深搜只需要将这一步放在递归后面，也就是先递归访问完所有邻居，再将自己标记为已访问
-        Iterable<Integer> neighbors = reverse ? graph.reverseNeighbors(vertex) : graph.neighbors(vertex);
+        Iterable<Edge> neighbors = reverse ? graph.reverseNeighbors(vertex) : graph.neighbors(vertex);
 
-        for (Integer neighbor : neighbors) {
-            if (!marked.contains(neighbor)) {
-                edgeTo.put(neighbor, vertex);
-                dfs(graph, neighbor); // recursive
+        for (Edge neighbor : neighbors) {
+            if (!marked.contains(neighbor.toVertex())) {
+                edgeTo.put(neighbor.toVertex(), vertex);
+                dfs(graph, neighbor.toVertex()); // recursive
             }
         }
     }

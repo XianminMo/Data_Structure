@@ -1,3 +1,9 @@
+package Algorithm;
+
+import DataStructure.Graph;
+
+import static DataStructure.Graph.Edge; // 为了实现有权重的图的最短路径寻找，定义Edge(toVertex, weight)
+
 import java.util.*;
 
 public class BreadthFirstPaths {
@@ -21,12 +27,12 @@ public class BreadthFirstPaths {
 
         while (!fringe.isEmpty()) {
             int v = fringe.poll(); // 取出队列中的第一个节点
-            for (int neighbor : graph.neighbors(v)) { // 遍历所有邻居
-                if (!marked.contains(neighbor)) {
-                    fringe.offer(neighbor); // 将该未访问的邻居节点加入队列
-                    edgeTo.put(neighbor, v); // 记录路径
-                    distTo.put(neighbor, distTo.get(v) + 1);
-                    marked.add(neighbor); // 标记邻居节点已访问
+            for (Edge neighbor : graph.neighbors(v)) { // 遍历所有邻居
+                if (!marked.contains(neighbor.toVertex())) {
+                    fringe.offer(neighbor.toVertex()); // 将该未访问的邻居节点加入队列
+                    edgeTo.put(neighbor.toVertex(), v); // 记录路径
+                    distTo.put(neighbor.toVertex(), distTo.get(v) + 1);
+                    marked.add(neighbor.toVertex()); // 标记邻居节点已访问
                 }
             }
         }
