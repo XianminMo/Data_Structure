@@ -4,11 +4,13 @@ public class BreadthFirstPaths {
     private final Set<Integer> marked;
     private final Map<Integer, Integer> edgeTo; // 记录该节点的父节点，Mapping vertex -> parent
     private final int start;
+    private final Map<Integer, Integer> distTo; // 记录该节点到起始节点的距离
 
     BreadthFirstPaths(Graph graph, int vertex) {
         this.marked = new HashSet<>();
         this.edgeTo = new HashMap<>();
         this.start = vertex;
+        this.distTo = new HashMap<>();
         bfs(graph, start);
     }
 
@@ -23,6 +25,7 @@ public class BreadthFirstPaths {
                 if (!marked.contains(neighbor)) {
                     fringe.offer(neighbor); // 将该未访问的邻居节点加入队列
                     edgeTo.put(neighbor, v); // 记录路径
+                    distTo.put(neighbor, distTo.get(v) + 1);
                     marked.add(neighbor); // 标记邻居节点已访问
                 }
             }
