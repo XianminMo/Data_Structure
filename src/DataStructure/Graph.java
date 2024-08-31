@@ -23,10 +23,10 @@
             adjList.get(fromVertex).add(new Edge(toVertex, weight));
             reverseAdjList.putIfAbsent(fromVertex, new ArrayList<>());
             reverseAdjList.putIfAbsent(toVertex, new ArrayList<>());
-
             reverseAdjList.get(toVertex).add(new Edge(fromVertex, weight));
         }
 
+        // 返回传入节点的所有邻居
         public Iterable<Edge> neighbors(int vertex) {
             List<Edge> neighbors = adjList.getOrDefault(vertex, new ArrayList<>());
             neighbors.sort(Comparator.comparingInt(p -> p.toVertex)); // ensure order
@@ -39,8 +39,13 @@
             return reverseNeighbors;
         }
 
-        // 为了实现有权重的图的最短路径寻找，定义Edge(toVertex, weight)
-            public record Edge(int toVertex, int weight) {
+        // 返回所有节点
+        public Set<Integer> getVertices() {
+            return adjList.keySet();
+        }
+
+        // 为了实现有权重的图的最短路径寻找，定义Edge(toVertex, weight)，这是一个类
+        public record Edge(int toVertex, int weight) {
         }
     }
 

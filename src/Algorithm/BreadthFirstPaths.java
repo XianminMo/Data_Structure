@@ -12,10 +12,10 @@ public class BreadthFirstPaths {
     private final int start;
     private final Map<Integer, Integer> distTo; // 记录该节点到起始节点的距离
 
-    BreadthFirstPaths(Graph graph, int vertex) {
+    BreadthFirstPaths(Graph graph, int start) {
         this.marked = new HashSet<>();
         this.edgeTo = new HashMap<>();
-        this.start = vertex;
+        this.start = start;
         this.distTo = new HashMap<>();
         bfs(graph, start);
     }

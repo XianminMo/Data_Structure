@@ -11,9 +11,9 @@ public class DepthFirstPaths {
     private final Map<Integer, Integer> edgeTo;
     private final boolean reverse;
 
-    public DepthFirstPaths(Graph graph, int vertex, boolean reverse) {
+    public DepthFirstPaths(Graph graph, int start, boolean reverse) {
         this.marked = new HashSet<>();
-        this.start = vertex;
+        this.start = start;
         this.edgeTo = new HashMap<>(); // 使用Map来动态存储已访问的父节点
         this.reverse = reverse; // 标志是否反向搜索
         dfs(graph, start);
