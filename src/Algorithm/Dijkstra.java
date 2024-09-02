@@ -41,7 +41,7 @@ public class Dijkstra {
         }
     }
 
-    // relaxation, 更新从 vertex到edge.toVertex() 的最短路径
+    // relaxation, 更新从 vertex 到 edge.toVertex() 的最短路径
     private void relax(Edge edge, int vertex) {
         int toVertex = edge.toVertex();
         int weight = edge.weight();
