@@ -1,7 +1,6 @@
-package Algorithm;
+package Algorithm.ShortestPath;
 
 import DataStructure.Graph;
-import com.sun.jdi.InvalidTypeException;
 
 import static DataStructure.Graph.Edge;
 
@@ -23,12 +22,6 @@ public class Dijkstra {
         distTo.put(start, 0);
         pq.add(new VertexDistancePair(start, 0));
 
-        // 初始化其他所有节点的距离为无穷大
-        for (int vertex : graph.getVertices()) {
-            if (vertex != start) {
-                distTo.put(vertex, Integer.MAX_VALUE);
-            }
-        }
 
         while (!pq.isEmpty()) {
             VertexDistancePair current = pq.poll();
@@ -45,6 +38,11 @@ public class Dijkstra {
     private void relax(Edge edge, int vertex) {
         int toVertex = edge.toVertex();
         int weight = edge.weight();
+
+        // 如果 weightTo 中没有 toVertex，则初始化它为 Integer.MAX_VALUE
+        if (!distTo.containsKey(toVertex)) {
+            distTo.put(toVertex, Integer.MAX_VALUE);
+        }
 
         if (distTo.get(vertex) + weight < distTo.get(toVertex)) {
             distTo.put(toVertex, distTo.get(vertex) + weight);
