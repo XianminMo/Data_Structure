@@ -2,59 +2,88 @@ package DataStructure;
 
 import java.util.Arrays;
 
+/**
+ * Simple Union-Find (Disjoint Set) data structure with path compression and union by size.
+ * It efficiently supports union and find operations.
+ */
 public class UnionFind {
-    private final int[] ufSet;
+    private final int[] ufSet; // Array representing the Union-Find structure
 
-
-    /* Creates a UnionFind data structure holding N items. Initially, all
-       items are in disjoint sets. */
+    /**
+     * Creates a UnionFind data structure holding N items. Initially, all items are in disjoint sets.
+     * Each item is its own root, and the size of each set is 1 (indicated by -1).
+     *
+     * @param N Number of items
+     */
     public UnionFind(int N) {
         ufSet = new int[N];
-        Arrays.fill(ufSet, -1);
+        Arrays.fill(ufSet, -1); // Initialize each item as a root of its own set with size 1
     }
 
-    /* Returns the size of the set V belongs to. */
+    /**
+     * Returns the size of the set that element V belongs to.
+     * Size is stored as a negative value at the root of each set.
+     *
+     * @param v Element whose set size is to be determined
+     * @return Size of the set containing V
+     */
     public int sizeOf(int v) {
-        int root = find(v);
-        return - ufSet[root];
+        int root = find(v); // Find the root of the set
+        return -ufSet[root]; // Return the size, which is stored as a negative value
     }
 
-    /* Returns the parent of V. If V is the root of a tree, returns the
-       negative size of the tree for which V is the root. */
+    /**
+     * Returns the parent of element V. If V is a root, it returns the negative size of the tree.
+     *
+     * @param v Element whose parent is to be returned
+     * @return Parent of V, or negative size if V is a root
+     */
     public int getParent(int v) {
         return ufSet[v];
     }
 
-    /* Returns true if nodes/vertices V1 and V2 are connected. */
+    /**
+     * Checks if two elements are in the same set.
+     *
+     * @param v1 First element
+     * @param v2 Second element
+     * @return true if V1 and V2 are connected, false otherwise
+     */
     public boolean connected(int v1, int v2) {
-        return find(v1) == find(v2);
+        return find(v1) == find(v2); // They are connected if they share the same root
     }
 
-    /* Returns the root of the set V belongs to. Path-compression is employed
-       allowing for fast search-time. If invalid items are passed into this
-       function, throw an IllegalArgumentException. */
+    /**
+     * Returns the root of the set containing element V. Uses path compression to flatten the structure,
+     * making future operations faster. Throws an exception if V is out of bounds.
+     *
+     * @param v Element whose root is to be found
+     * @return The root of the set containing V
+     * @throws IllegalArgumentException if V is out of bounds
+     */
     public int find(int v) {
         if (v < 0 || v >= ufSet.length) {
             throw new IllegalArgumentException("IllegalArgument!");
         }
         if (getParent(v) < 0) {
-            return v;
-        }else {
-            ufSet[v] = find(getParent(v)); // path compression
+            return v; // V is a root if its parent value is negative
+        } else {
+            ufSet[v] = find(getParent(v)); // Path compression: Make the found root the direct parent of V
         }
-        return getParent(v);
+        return getParent(v); // Return the root
     }
 
-    /* Connects two items V1 and V2 together by connecting their respective
-       sets. V1 and V2 can be any element, and a union-by-size heuristic is
-       used. If the sizes of the sets are equal, tie break by connecting V1's
-       root to V2's root. Union-ing an item with itself or items that are
-       already connected should not change the structure. */
+    /**
+     * Connects two elements V1 and V2 by merging their sets. Uses union by size heuristic:
+     * the smaller set (or tie-breaking V1's set) is merged into the larger set.
+     *
+     * @param v1 First element
+     * @param v2 Second element
+     */
     public void union(int v1, int v2) {
         if (connected(v1, v2)) {
-            return;
+            return; // If already connected, no need to union
         }
-        ;
         int root1 = find(v1);
         int root2 = find(v2);
 
@@ -62,12 +91,11 @@ public class UnionFind {
         int size2 = -ufSet[root2];
 
         if (size1 <= size2) {
-            ufSet[root1] = root2;
-            ufSet[root2] = - (size1 + size2);
-        }else {
-            ufSet[root2] = root1;
-            ufSet[root1] = - (size1 + size2);
+            ufSet[root1] = root2; // Make root2 the parent of root1
+            ufSet[root2] = -(size1 + size2); // Update the size of the new root (root2)
+        } else {
+            ufSet[root2] = root1; // Make root1 the parent of root2
+            ufSet[root1] = -(size1 + size2); // Update the size of the new root (root1)
         }
     }
-
 }
